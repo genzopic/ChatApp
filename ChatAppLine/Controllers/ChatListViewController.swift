@@ -19,6 +19,9 @@ class ChatListViewController: UIViewController {
         chatListView.delegate = self
         chatListView.dataSource = self
         
+        navigationController?.navigationBar.barTintColor = .rgb(red: 39, green: 49, blue: 69)
+        navigationItem.title = "トーク"
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
     }
     
@@ -41,6 +44,12 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "ChatRoom", bundle: nil)
+        let chatRoomViewController = storyboard.instantiateViewController(identifier: "ChatRoomViewController")
+        navigationController?.pushViewController(chatRoomViewController, animated: true)
+    }
+    
 }
 
 
@@ -61,6 +70,8 @@ class chatListTableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+        
+        
         
         
     }
