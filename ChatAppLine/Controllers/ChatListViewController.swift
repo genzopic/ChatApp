@@ -14,51 +14,69 @@ class ChatListViewController: UIViewController {
     @IBOutlet weak var chatListView: UITableView!
     
     private let cellId = "cellId"
-    private var users = [User]()
+    private var user: User? {
+        didSet {
+            navigationItem.title = user?.username
+            
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViews()
+        confirmLoggedInUser()
+        fetchLoginUserInfo()
+    }
+    
+    private func setupViews() {
         chatListView.delegate = self
         chatListView.dataSource = self
+        
         
         navigationController?.navigationBar.barTintColor = .rgb(red: 39, green: 49, blue: 69)
         navigationItem.title = "トーク"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
+        let rightBarButton = UIBarButtonItem(title: "新規チャット", style: .plain, target: self, action: #selector(tappedNavRightBarButton))
+        navigationItem.rightBarButtonItem = rightBarButton
+        navigationItem.rightBarButtonItem?.tintColor = .white
+    }
+    
+    private func confirmLoggedInUser() {
         if Auth.auth().currentUser?.uid == nil {
             let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
             let signUpViewController = storyboard.instantiateViewController(withIdentifier: "SignUpViewController") as! SignUpViewController
             signUpViewController.modalPresentationStyle = .fullScreen
             present(signUpViewController, animated: true, completion: nil)
         }
+    }
+    
+    @objc private func tappedNavRightBarButton() {
+        let storyboard = UIStoryboard(name: "UserList", bundle: nil)
+        let userListViewController = storyboard.instantiateViewController(withIdentifier: "UserListViewController")
+        let nav = UINavigationController(rootViewController: userListViewController)
+        present(nav, animated: true, completion: nil)
+    }
+    
+    private func fetchLoginUserInfo() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchUserInfoFromFirestore()
-    }
-    
-    private func fetchUserInfoFromFirestore() {
-        Firestore.firestore().collection("users").getDocuments { (snapshots, error) in
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, error) in
             if let err = error {
                 print("fetch users err: ",err.localizedDescription)
                 return
             }
-            print("fetch users success!!")
-            snapshots?.documents.forEach({ (snapshot) in
-                let dic = snapshot.data()
-                let user = User.init(dic: dic)
-                self.users.append(user)
-                self.chatListView.reloadData()
-            })
-            self.users.forEach { (user) in
-                print("username : ",user.username)
-            }
+            guard let snapshot = snapshot else { return }
+            guard let dic = snapshot.data() else { return }
+            let user = User(dic: dic)
+            
+            self.user = user
+            
         }
+        
     }
-    
+        
     
 }
 
@@ -71,13 +89,12 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = chatListView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! chatListTableViewCell
         
-        cell.user = users[indexPath.row]
         
         return cell
     }
@@ -98,7 +115,7 @@ class chatListTableViewCell: UITableViewCell {
         didSet {
             if let user = user {
                 partnerLable.text = user.username
-                //            userImageView.image = user.profileImageUrl
+//                userImageView.image = user.profileImageUrl
                 dataLabel.text = dataFormatterForDateLabel(date: user.createAt.dateValue())
                 latestMessageLabel.text = user.email
             }
