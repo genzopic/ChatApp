@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		733C7DBF26117D0400A2344E /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 733C7DBE26117D0400A2344E /* .gitignore */; };
+		7342F7D12610528E007867D3 /* user.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7342F7D02610528E007867D3 /* user.swift */; };
 		734CDC46260D788D00BB3F61 /* ChatRoom.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 734CDC45260D788D00BB3F61 /* ChatRoom.storyboard */; };
 		734CDC49260D795700BB3F61 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734CDC48260D795700BB3F61 /* ChatRoomViewController.swift */; };
 		734CDC4C260D7CA200BB3F61 /* ChatRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734CDC4B260D7CA200BB3F61 /* ChatRoomTableViewCell.xib */; };
 		734CDC50260D813600BB3F61 /* ChatRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734CDC4F260D813600BB3F61 /* ChatRoomTableViewCell.swift */; };
 		734CDC55260E3A0000BB3F61 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 734CDC54260E3A0000BB3F61 /* GoogleService-Info.plist */; };
 		7352435B260D65E90001BC1D /* UIColor-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7352435A260D65E90001BC1D /* UIColor-Extension.swift */; };
-		7393D285260CC1C600E66D2C /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 7393D284260CC1C600E66D2C /* .gitignore */; };
 		73AEC16D260E3D0A00073755 /* ChatInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73AEC16C260E3D0A00073755 /* ChatInputAccessoryView.xib */; };
 		73AEC171260E3F0000073755 /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEC170260E3F0000073755 /* ChatInputAccessoryView.swift */; };
 		73CD22C1260C75FA0064712D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CD22C0260C75FA0064712D /* AppDelegate.swift */; };
@@ -30,13 +31,14 @@
 /* Begin PBXFileReference section */
 		23502BAA9542E13A1C79AEC6 /* Pods-ChatAppLine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatAppLine.release.xcconfig"; path = "Target Support Files/Pods-ChatAppLine/Pods-ChatAppLine.release.xcconfig"; sourceTree = "<group>"; };
 		5434A1CAFCF20F1FBE2F4747 /* Pods_ChatAppLine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatAppLine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		733C7DBE26117D0400A2344E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		7342F7D02610528E007867D3 /* user.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = user.swift; sourceTree = "<group>"; };
 		734CDC45260D788D00BB3F61 /* ChatRoom.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChatRoom.storyboard; sourceTree = "<group>"; };
 		734CDC48260D795700BB3F61 /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 		734CDC4B260D7CA200BB3F61 /* ChatRoomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatRoomTableViewCell.xib; sourceTree = "<group>"; };
 		734CDC4F260D813600BB3F61 /* ChatRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTableViewCell.swift; sourceTree = "<group>"; };
 		734CDC54260E3A0000BB3F61 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7352435A260D65E90001BC1D /* UIColor-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor-Extension.swift"; sourceTree = "<group>"; };
-		7393D284260CC1C600E66D2C /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		73AEC16C260E3D0A00073755 /* ChatInputAccessoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatInputAccessoryView.xib; sourceTree = "<group>"; };
 		73AEC170260E3F0000073755 /* ChatInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputAccessoryView.swift; sourceTree = "<group>"; };
 		73CD22BD260C75FA0064712D /* ChatAppLine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatAppLine.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,6 +66,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7342F7CF2610526D007867D3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7342F7D02610528E007867D3 /* user.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		73524356260D64700001BC1D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,7 +123,7 @@
 		73CD22B4260C75FA0064712D = {
 			isa = PBXGroup;
 			children = (
-				7393D284260CC1C600E66D2C /* .gitignore */,
+				733C7DBE26117D0400A2344E /* .gitignore */,
 				73CD22BF260C75FA0064712D /* ChatAppLine */,
 				73CD22BE260C75FA0064712D /* Products */,
 				E77ECC42F0E5105C292E925E /* Pods */,
@@ -132,6 +142,7 @@
 		73CD22BF260C75FA0064712D /* ChatAppLine */ = {
 			isa = PBXGroup;
 			children = (
+				7342F7CF2610526D007867D3 /* Models */,
 				73AEC16A260E3C9E00073755 /* Extensions */,
 				73AEC169260E3C7D00073755 /* Views */,
 				73AEC168260E3C5800073755 /* Xibs */,
@@ -223,7 +234,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7393D285260CC1C600E66D2C /* .gitignore in Resources */,
 				734CDC46260D788D00BB3F61 /* ChatRoom.storyboard in Resources */,
 				73F68F76260EEA21001DB07D /* SignUp.storyboard in Resources */,
 				73AEC16D260E3D0A00073755 /* ChatInputAccessoryView.xib in Resources */,
@@ -231,6 +241,7 @@
 				73CD22CA260C75FA0064712D /* Assets.xcassets in Resources */,
 				734CDC4C260D7CA200BB3F61 /* ChatRoomTableViewCell.xib in Resources */,
 				73CD22D6260C76830064712D /* ChatList.storyboard in Resources */,
+				733C7DBF26117D0400A2344E /* .gitignore in Resources */,
 				734CDC55260E3A0000BB3F61 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -289,6 +300,7 @@
 				73F68F79260EEDD0001DB07D /* SignUpViewController.swift in Sources */,
 				7352435B260D65E90001BC1D /* UIColor-Extension.swift in Sources */,
 				734CDC50260D813600BB3F61 /* ChatRoomTableViewCell.swift in Sources */,
+				7342F7D12610528E007867D3 /* user.swift in Sources */,
 				734CDC49260D795700BB3F61 /* ChatRoomViewController.swift in Sources */,
 				73CD22DA260C774C0064712D /* ChatListViewController.swift in Sources */,
 				73CD22C3260C75FA0064712D /* SceneDelegate.swift in Sources */,
