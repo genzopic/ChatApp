@@ -29,15 +29,11 @@ class UserListViewController: UIViewController {
         
         userListTableView.delegate = self
         userListTableView.dataSource = self
+        userListTableView.tableFooterView = UIView()
         
         fetchUserInfoFromFirestore()
         
     }
-    
-    @IBAction func tappedCloseButton(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-    
     
     @objc func tappedStartButton() {
         print("tappedStartButton")
