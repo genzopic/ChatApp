@@ -19,6 +19,7 @@
 		736F481126122DE100A62987 /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F481026122DE100A62987 /* UserListViewController.swift */; };
 		736F48142612343300A62987 /* UserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F48132612343300A62987 /* UserListTableViewCell.swift */; };
 		737288DD2613EBF2002E5CE2 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737288DC2613EBF2002E5CE2 /* ChatRoom.swift */; };
+		737288E126145F56002E5CE2 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737288E026145F56002E5CE2 /* Message.swift */; };
 		73AEC16D260E3D0A00073755 /* ChatInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73AEC16C260E3D0A00073755 /* ChatInputAccessoryView.xib */; };
 		73AEC171260E3F0000073755 /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEC170260E3F0000073755 /* ChatInputAccessoryView.swift */; };
 		73CD22C1260C75FA0064712D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CD22C0260C75FA0064712D /* AppDelegate.swift */; };
@@ -47,6 +48,7 @@
 		736F481026122DE100A62987 /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		736F48132612343300A62987 /* UserListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListTableViewCell.swift; sourceTree = "<group>"; };
 		737288DC2613EBF2002E5CE2 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
+		737288E026145F56002E5CE2 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		73AEC16C260E3D0A00073755 /* ChatInputAccessoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatInputAccessoryView.xib; sourceTree = "<group>"; };
 		73AEC170260E3F0000073755 /* ChatInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputAccessoryView.swift; sourceTree = "<group>"; };
 		73CD22BD260C75FA0064712D /* ChatAppLine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatAppLine.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +81,7 @@
 			children = (
 				7342F7D02610528E007867D3 /* User.swift */,
 				737288DC2613EBF2002E5CE2 /* ChatRoom.swift */,
+				737288E026145F56002E5CE2 /* Message.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				737288DD2613EBF2002E5CE2 /* ChatRoom.swift in Sources */,
 				736F481126122DE100A62987 /* UserListViewController.swift in Sources */,
 				7342F7D12610528E007867D3 /* User.swift in Sources */,
+				737288E126145F56002E5CE2 /* Message.swift in Sources */,
 				734CDC49260D795700BB3F61 /* ChatRoomViewController.swift in Sources */,
 				73CD22DA260C774C0064712D /* ChatListViewController.swift in Sources */,
 				73CD22C3260C75FA0064712D /* SceneDelegate.swift in Sources */,
