@@ -12,8 +12,9 @@ import Firebase
 class ChatRoomViewController: UIViewController {
     
     @IBOutlet weak var chatRoomTableView: UITableView!
-    
+    // loginUser
     var user: User?
+    // chatRoom,partnerUser
     var chatRoom: ChatRoom?
 
     let cellId = "cellId"
@@ -62,6 +63,7 @@ class ChatRoomViewController: UIViewController {
                     case .added:
                         let dic = documentChange.document.data()
                         let message = Message(dic: dic)
+                        message.partnerUser = self.chatRoom?.partnerUser
                         self.messages.append(message)
                         self.chatRoomTableView.reloadData()
                     case .modified,.removed:

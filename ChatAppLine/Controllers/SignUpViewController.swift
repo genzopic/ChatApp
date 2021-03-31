@@ -115,6 +115,16 @@ extension SignUpViewController: UITextFieldDelegate {
         
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // タッチしたらキーボードを閉じる
+        view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Enterでキーボードを閉じる
+        textField.resignFirstResponder()
+    }
+
 }
 
 // MARK: - imagePicker

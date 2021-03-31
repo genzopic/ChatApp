@@ -80,8 +80,10 @@ extension ChatInputAccessoryView: UITextViewDelegate {
 
         if textView.text.isEmpty {
             sendButton.isEnabled = false
+            print("sendButton Enable=false")
         } else {
             sendButton.isEnabled = true
+            print("sendButton Enable=true")
         }
         
     }
