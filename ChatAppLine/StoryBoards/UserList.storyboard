@@ -66,6 +66,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="BX0-hi-1aa">
+                        <barButtonItem key="leftBarButtonItem" title="閉じる" id="jNP-rB-scr">
+                            <connections>
+                                <action selector="tappedCloseButton:" destination="nDL-7s-IrF" id="BOo-SJ-2rV"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="0Sd-sg-S2B">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="ZLq-HP-MnF">
                                 <rect key="frame" x="302" y="7" width="92" height="30"/>
