@@ -27,7 +27,9 @@ class ChatRoomViewController: UIViewController {
         chatRoomTableView.dataSource = self
         chatRoomTableView.register(UINib(nibName: "ChatRoomTableViewCell", bundle: nil), forCellReuseIdentifier: cellId)
         chatRoomTableView.backgroundColor = .rgb(red: 118, green: 140, blue: 180)
-        
+        // 見切れる部分を微調整
+        chatRoomTableView.contentInset = .init(top: 0, left: 0, bottom: 40, right: 0)
+        chatRoomTableView.scrollIndicatorInsets = .init(top: 0, left: 0, bottom: 40, right: 0)
         fetchMessages()
     }
     
@@ -65,7 +67,14 @@ class ChatRoomViewController: UIViewController {
                         let message = Message(dic: dic)
                         message.partnerUser = self.chatRoom?.partnerUser
                         self.messages.append(message)
+                        self.messages.sort { (m1, m2) -> Bool in
+                            let m1Date = m1.createdAt.dateValue()
+                            let m2Date = m2.createdAt.dateValue()
+                            return m1Date < m2Date
+                        }
                         self.chatRoomTableView.reloadData()
+                        // 一番下にスクロールする
+                        self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
                     case .modified,.removed:
                         print("nothing to do")
                     }
@@ -80,30 +89,57 @@ class ChatRoomViewController: UIViewController {
 extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
     // チャットメッセージの入力エリアの文字を受け取る
     func tappedSendButton(text: String) {
-//        messages.append(text)
-//        chatRoomTableView.reloadData()
         
+        addMessageToFirestore(text: text)
+        
+    }
+    
+    private func addMessageToFirestore(text: String) {
         guard let chatRoomDocId = chatRoom?.documentId else { return }
         guard let name = user?.username else { return }
         guard let uid = Auth.auth().currentUser?.uid else { return }
+        chatInputAccessoryView.removeText()
+        
+        let messageId = randomString(length: 20)
         let docData = [
             "name": name,
             "createdAt": Timestamp(),
             "uid": uid,
             "message": text
         ] as [String : Any]
-        Firestore.firestore().collection("chatRooms").document(chatRoomDocId).collection("messages").document()
+        Firestore.firestore().collection("chatRooms").document(chatRoomDocId).collection("messages").document(messageId)
             .setData(docData, completion: { (error) in
                 if let err = error {
                     print("save messages err: ",err.localizedDescription)
                     return
                 }
-                print("save message success!!")
-                self.chatInputAccessoryView.removeText()
+                let latestMessageDat = [
+                    "latestMessageId": messageId
+                ]
+                Firestore.firestore().collection("chatRooms").document(chatRoomDocId).updateData(latestMessageDat) { (error) in
+                    if let err = error {
+                        print("update latestMessage err: ",err.localizedDescription)
+                        return
+                    }
+                    print("save message success!!")
+                }
             })
-            
-        
     }
+    
+    func randomString(length: Int) -> String {
+            let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            let len = UInt32(letters.length)
+
+            var randomString = ""
+        for _ in 0 ..< length {
+                let rand = arc4random_uniform(len)
+                var nextChar = letters.character(at: Int(rand))
+                randomString += NSString(characters: &nextChar, length: 1) as String
+            }
+            return randomString
+    }
+    
+    
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource

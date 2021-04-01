@@ -44,10 +44,12 @@ class ChatRoomTableViewCell: UITableViewCell {
         partnerMessageTextView.layer.cornerRadius = 15
         partnerMessageTextView.isEditable = false
         partnerMessageTextView.isSelectable = false
+        partnerMessageTextView.isScrollEnabled = false
         //
         myMessageTextView.layer.cornerRadius = 15
         myMessageTextView.isEditable = false
         myMessageTextView.isSelectable = false
+        myMessageTextView.isScrollEnabled = false
 
         backgroundColor = .clear
         
@@ -110,7 +112,7 @@ class ChatRoomTableViewCell: UITableViewCell {
     
     private func dataFormatterForDateLabel(date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .none
+        formatter.dateStyle = .short
         formatter.timeStyle = .short
         formatter.locale = Locale(identifier: "ja-jp")
         return formatter.string(from: date)

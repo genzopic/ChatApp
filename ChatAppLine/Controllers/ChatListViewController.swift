@@ -35,14 +35,13 @@ class ChatListViewController: UIViewController {
     // チャットルームをFirestoreから取得
     private func fetchChatRoomsInfoFromFirestore() {
         Firestore.firestore().collection("chatRooms")
-            .addSnapshotListener { (snapshot, error) in
-                //            .getDocuments { (snapshot, error) in
+            .addSnapshotListener { (chatRoomSnapshot, error) in
                 if let err = error {
                     print("get chatRooms err: ",err.localizedDescription)
                     return
                 }
                 print("get chatRooms success!!")
-                snapshot?.documentChanges.forEach({ (documentChange) in
+                chatRoomSnapshot?.documentChanges.forEach({ (documentChange) in
                     switch documentChange.type {
                     case .added:
                         self.handleAddedDucumentChange(documentChange: documentChange)
@@ -52,39 +51,57 @@ class ChatListViewController: UIViewController {
                 })
             }
     }
-    
+    //
     private func handleAddedDucumentChange(documentChange: DocumentChange) {
-        let dic = documentChange.document.data()
-        let chatRoom = ChatRoom(dic: dic)
+        let chatRoomdic = documentChange.document.data()
+        let chatRoom = ChatRoom(dic: chatRoomdic)
         chatRoom.documentId = documentChange.document.documentID
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        // 自分がメンバーに含まれているか
+        // 自分がメンバーに含まれていなければ抜ける
         let isContain = chatRoom.members.contains(uid)
         if !isContain { return }
         chatRoom.members.forEach { (memberUid) in
+            // 自分以外のメンバーを表示する
             if memberUid != uid {
-                Firestore.firestore().collection("users").document(memberUid).getDocument { (snapshot, error) in
+                Firestore.firestore().collection("users").document(memberUid).getDocument { (userSnapshots, error) in
                     if let err = error {
                         print("get member err: ",err)
                         return
                     }
-                    print("get member success")
-                    // メンバーのユーザー情報を取得
-                    guard let dic = snapshot?.data() else {
+                    // メンバーのユーザー情報を取得して、partnerUserにセット
+                    guard let dic = userSnapshots?.data() else {
                         print("snapshot is Null")
                         return
                     }
                     let user = User(dic: dic)
                     user.uid = documentChange.document.documentID
                     chatRoom.partnerUser = user
-                    //
-                    self.chatRooms.append(chatRoom)
-                    print("chatRooms count: ",self.chatRooms.count)
-                    self.chatListView.reloadData()
+                    // 最後のメッセージを取得して、latestMessageにセット
+                    guard let chatRoomId = chatRoom.documentId  else { return }
+                    let latestMessageId = chatRoom.latestMessageId
+                    if latestMessageId == "" {
+                        self.chatRooms.append(chatRoom)
+                        print("chatRooms count: ",self.chatRooms.count)
+                        self.chatListView.reloadData()
+                    } else {
+                        Firestore.firestore().collection("chatRooms").document(chatRoomId).collection("messages").document(latestMessageId).getDocument { (messageSnapshots, error) in
+                            if let err = error {
+                                print("get latestMessage err: ",err.localizedDescription)
+                                return
+                            }
+                            guard let dic = messageSnapshots?.data() else { return }
+                            let message = Message(dic: dic)
+                            chatRoom.latestMessage = message
+                        }
+                        //
+                        self.chatRooms.append(chatRoom)
+                        print("chatRooms count: ",self.chatRooms.count)
+                        self.chatListView.reloadData()
+                    }
                 }
             }
         }
-
+        
     }
     
     // ビューの初期設定
@@ -175,10 +192,15 @@ class chatListTableViewCell: UITableViewCell {
     var chatRoom: ChatRoom? {
         didSet {
             if let chatRoom = chatRoom {
+                // パートナー名
                 self.partnerLable.text = chatRoom.partnerUser?.username
                 guard let url = URL(string: chatRoom.partnerUser?.profileImageUrl ?? "") else { return }
+                // プロフィール画像
                 Nuke.loadImage(with: url, into: self.userImageView)
-                dataLabel.text = dataFormatterForDateLabel(date: chatRoom.createdAt.dateValue())
+                // 更新日時
+                dataLabel.text = dataFormatterForDateLabel(date: chatRoom.latestMessage?.createdAt.dateValue() ?? Date())
+                // 最後のメッセージ
+                latestMessageLabel.text = self.chatRoom?.latestMessage?.message
             }
         }
     }
@@ -201,7 +223,7 @@ class chatListTableViewCell: UITableViewCell {
     private func dataFormatterForDateLabel(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .full
-        formatter.timeStyle = .none
+        formatter.timeStyle = .short
         formatter.locale = Locale(identifier: "ja-jp")
         return formatter.string(from: date)
     }
