@@ -80,24 +80,25 @@ class ChatListViewController: UIViewController {
                     guard let chatRoomId = chatRoom.documentId  else { return }
                     let latestMessageId = chatRoom.latestMessageId
                     if latestMessageId == "" {
+                        // テスト中の不整合データの対応
                         self.chatRooms.append(chatRoom)
                         print("chatRooms count: ",self.chatRooms.count)
                         self.chatListView.reloadData()
-                    } else {
-                        Firestore.firestore().collection("chatRooms").document(chatRoomId).collection("messages").document(latestMessageId).getDocument { (messageSnapshots, error) in
-                            if let err = error {
-                                print("get latestMessage err: ",err.localizedDescription)
-                                return
-                            }
-                            guard let dic = messageSnapshots?.data() else { return }
-                            let message = Message(dic: dic)
-                            chatRoom.latestMessage = message
-                        }
-                        //
-                        self.chatRooms.append(chatRoom)
-                        print("chatRooms count: ",self.chatRooms.count)
-                        self.chatListView.reloadData()
+                        return
                     }
+                    Firestore.firestore().collection("chatRooms").document(chatRoomId).collection("messages").document(latestMessageId).getDocument { (messageSnapshots, error) in
+                        if let err = error {
+                            print("get latestMessage err: ",err.localizedDescription)
+                            return
+                        }
+                        guard let dic = messageSnapshots?.data() else { return }
+                        let message = Message(dic: dic)
+                        chatRoom.latestMessage = message
+                    }
+                    //
+                    self.chatRooms.append(chatRoom)
+                    print("chatRooms count: ",self.chatRooms.count)
+                    self.chatListView.reloadData()
                 }
             }
         }
