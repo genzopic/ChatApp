@@ -14,6 +14,8 @@
 		734CDC4C260D7CA200BB3F61 /* ChatRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734CDC4B260D7CA200BB3F61 /* ChatRoomTableViewCell.xib */; };
 		734CDC50260D813600BB3F61 /* ChatRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734CDC4F260D813600BB3F61 /* ChatRoomTableViewCell.swift */; };
 		734CDC55260E3A0000BB3F61 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 734CDC54260E3A0000BB3F61 /* GoogleService-Info.plist */; };
+		735094AF261695B400237F2B /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 735094AE261695B400237F2B /* Login.storyboard */; };
+		735094B226169B2F00237F2B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735094B126169B2F00237F2B /* LoginViewController.swift */; };
 		7352435B260D65E90001BC1D /* UIColor-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7352435A260D65E90001BC1D /* UIColor-Extension.swift */; };
 		736F480E26122C7500A62987 /* UserList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 736F480D26122C7500A62987 /* UserList.storyboard */; };
 		736F481126122DE100A62987 /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F481026122DE100A62987 /* UserListViewController.swift */; };
@@ -43,6 +45,8 @@
 		734CDC4B260D7CA200BB3F61 /* ChatRoomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatRoomTableViewCell.xib; sourceTree = "<group>"; };
 		734CDC4F260D813600BB3F61 /* ChatRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTableViewCell.swift; sourceTree = "<group>"; };
 		734CDC54260E3A0000BB3F61 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		735094AE261695B400237F2B /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		735094B126169B2F00237F2B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7352435A260D65E90001BC1D /* UIColor-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor-Extension.swift"; sourceTree = "<group>"; };
 		736F480D26122C7500A62987 /* UserList.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = UserList.storyboard; sourceTree = "<group>"; };
 		736F481026122DE100A62987 /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
@@ -94,6 +98,7 @@
 				73F68F78260EEDD0001DB07D /* SignUpViewController.swift */,
 				736F481026122DE100A62987 /* UserListViewController.swift */,
 				736F48132612343300A62987 /* UserListTableViewCell.swift */,
+				735094B126169B2F00237F2B /* LoginViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -105,6 +110,7 @@
 				734CDC45260D788D00BB3F61 /* ChatRoom.storyboard */,
 				73F68F75260EEA21001DB07D /* SignUp.storyboard */,
 				736F480D26122C7500A62987 /* UserList.storyboard */,
+				735094AE261695B400237F2B /* Login.storyboard */,
 			);
 			path = StoryBoards;
 			sourceTree = "<group>";
@@ -259,6 +265,7 @@
 				73CD22D6260C76830064712D /* ChatList.storyboard in Resources */,
 				733C7DBF26117D0400A2344E /* .gitignore in Resources */,
 				734CDC55260E3A0000BB3F61 /* GoogleService-Info.plist in Resources */,
+				735094AF261695B400237F2B /* Login.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +318,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				735094B226169B2F00237F2B /* LoginViewController.swift in Sources */,
 				73CD22C1260C75FA0064712D /* AppDelegate.swift in Sources */,
 				73AEC171260E3F0000073755 /* ChatInputAccessoryView.swift in Sources */,
 				73F68F79260EEDD0001DB07D /* SignUpViewController.swift in Sources */,

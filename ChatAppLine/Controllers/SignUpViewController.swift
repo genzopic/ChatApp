@@ -8,7 +8,7 @@
 import UIKit
 //
 import Firebase
-
+import PKHUD
 
 class SignUpViewController: UIViewController {
     
@@ -22,20 +22,43 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        profileImageButton.layer.cornerRadius = profileImageButton.frame.size.height / 2
-        profileImageButton.layer.borderWidth = 1
-        profileImageButton.layer.borderColor = UIColor.rgb(red: 240, green: 240, blue: 240).cgColor
-
-        registerButton.layer.cornerRadius = 10
-        registerButton.isEnabled = false
-        registerButton.backgroundColor = .rgb(red: 100, green: 100, blue: 100)
-
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
-        userNameTextField.delegate = self
+        setupViews()
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.isHidden = true
+        
+    }
+    
+    private func setupViews() {
+        // プロフィール画像
+        profileImageButton.layer.cornerRadius = profileImageButton.frame.size.height / 2
+        profileImageButton.layer.borderWidth = 1
+        profileImageButton.layer.borderColor = UIColor.rgb(red: 240, green: 240, blue: 240).cgColor
+        // Registerボタン
+        registerButton.layer.cornerRadius = 10
+        registerButton.isEnabled = false
+        registerButton.backgroundColor = .rgb(red: 100, green: 100, blue: 100)
+        // password
+        passwordTextField.isSecureTextEntry = true
+        //
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        userNameTextField.delegate = self
+        // 既にアカウントをお持ちの方のアクションを設定
+        alredyHaveAccountButton.addTarget(self, action: #selector( tappedAlreadyHaveAccountButton), for: .touchUpInside)
+        
+    }
+    // 既にアカウントをお持ちの方をタップ
+    @objc private func tappedAlreadyHaveAccountButton() {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let loginViewController = storyboard.instantiateViewController(identifier: "LoginViewController") as! LoginViewController
+        self.navigationController?.pushViewController(loginViewController, animated: true)
+    }
+    // プロフィール画像をタップ
     @IBAction func tappedProfileImageButton(_ sender: Any) {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
@@ -43,20 +66,23 @@ class SignUpViewController: UIViewController {
         self.present(imagePickerController, animated: true, completion: nil)
         
     }
-    
+    // Registerボタンをタップ
     @IBAction func tappedRegisterButton(_ sender: Any) {
-        guard let image = profileImageButton.imageView?.image else { return }
-        guard let uploadImage = image.jpegData(compressionQuality: 0.3) else { return }
+        let image = profileImageButton.imageView?.image ?? UIImage(named: "person")
+        guard let uploadImage = image?.jpegData(compressionQuality: 0.3) else { return }
+        HUD.show(.progress)
         let fileName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("profile_image").child(fileName)
         storageRef.putData(uploadImage, metadata: nil) { (metadata, error) in
             if let err = error {
                 print("save image err: ",err.localizedDescription)
+                HUD.hide()
                 return
             }
             storageRef.downloadURL { (url, error) in
                 if let err = error {
                     print("download image err: ",err.localizedDescription)
+                    HUD.hide()
                     return
                 }
                 guard let urlString = url?.absoluteString else { return }
@@ -70,9 +96,11 @@ class SignUpViewController: UIViewController {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         guard let userName = userNameTextField.text else { return }
+        HUD.show(.progress)
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
             if let err = error {
                 print("signIn err: ",err.localizedDescription)
+                HUD.hide()
                 return
             }
             // save users for firestore
@@ -86,14 +114,20 @@ class SignUpViewController: UIViewController {
             Firestore.firestore().collection("users").document(uid).setData(docData) { (error) in
                 if let err = error {
                     print("save database err: ",err.localizedDescription)
+                    HUD.hide()
                     return
                 }
                 print("save database success!!")
+                HUD.hide()
                 self.dismiss(animated: true, completion: nil)
             }
         }
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // タッチしたらキーボードを閉じる
+        view.endEditing(true)
+    }
 
 }
 
@@ -113,11 +147,6 @@ extension SignUpViewController: UITextFieldDelegate {
             registerButton.backgroundColor = .rgb(red: 0, green: 185, blue: 0)
         }
         
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // タッチしたらキーボードを閉じる
-        view.endEditing(true)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

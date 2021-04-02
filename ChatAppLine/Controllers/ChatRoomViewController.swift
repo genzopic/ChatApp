@@ -27,9 +27,13 @@ class ChatRoomViewController: UIViewController {
         chatRoomTableView.dataSource = self
         chatRoomTableView.register(UINib(nibName: "ChatRoomTableViewCell", bundle: nil), forCellReuseIdentifier: cellId)
         chatRoomTableView.backgroundColor = .rgb(red: 118, green: 140, blue: 180)
-        // 見切れる部分を微調整
-        chatRoomTableView.contentInset = .init(top: 0, left: 0, bottom: 40, right: 0)
-        chatRoomTableView.scrollIndicatorInsets = .init(top: 0, left: 0, bottom: 40, right: 0)
+        // 見切れる部分を微調整( 反転させる前は、top: 0, left: 0, bottom: 40, right: 0 )
+        chatRoomTableView.contentInset = .init(top: 60, left: 0, bottom: 0, right: 0)
+        chatRoomTableView.scrollIndicatorInsets = .init(top: 60, left: 0, bottom: 0, right: 0)
+        //　スクロールするとキーボードが消えるようにする
+        chatRoomTableView.keyboardDismissMode = .interactive
+        // 反転させて、cellもまた、反転させる
+        chatRoomTableView.transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
         fetchMessages()
     }
     
@@ -70,11 +74,11 @@ class ChatRoomViewController: UIViewController {
                         self.messages.sort { (m1, m2) -> Bool in
                             let m1Date = m1.createdAt.dateValue()
                             let m2Date = m2.createdAt.dateValue()
-                            return m1Date < m2Date
+                            return m1Date > m2Date
                         }
                         self.chatRoomTableView.reloadData()
-                        // 一番下にスクロールする
-                        self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
+                        // 一番下にスクロールする（反転て一番下を表示固定にしたので、コメント。上の＜を＞にして並び順も逆にした）
+//                        self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
                     case .modified,.removed:
                         print("nothing to do")
                     }
@@ -157,7 +161,7 @@ extension ChatRoomViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ChatRoomTableViewCell
-//        cell.messageTextView.text = messages[indexPath.row]
+        cell.transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
         cell.message = messages[indexPath.row]
         return cell
     }

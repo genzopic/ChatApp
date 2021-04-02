@@ -14,6 +14,8 @@ class ChatListViewController: UIViewController {
     
     @IBOutlet weak var chatListView: UITableView!
     
+    private var chatRoomListner: ListenerRegistration?
+    
     private let cellId = "cellId"
     private var user: User? {
         didSet {
@@ -28,13 +30,23 @@ class ChatListViewController: UIViewController {
         
         setupViews()
         confirmLoggedInUser()
-        fetchLoginUserInfo()
         fetchChatRoomsInfoFromFirestore()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        fetchLoginUserInfo()
+    }
+    
     // チャットルームをFirestoreから取得
-    private func fetchChatRoomsInfoFromFirestore() {
-        Firestore.firestore().collection("chatRooms")
+    func fetchChatRoomsInfoFromFirestore() {
+        // 一度クリア
+        chatRoomListner?.remove()
+        chatRooms.removeAll()
+        chatListView.reloadData()
+        //
+        chatRoomListner = Firestore.firestore().collection("chatRooms")
             .addSnapshotListener { (chatRoomSnapshot, error) in
                 if let err = error {
                     print("get chatRooms err: ",err.localizedDescription)
@@ -119,24 +131,42 @@ class ChatListViewController: UIViewController {
         let rightBarButton = UIBarButtonItem(title: "新規チャット", style: .plain, target: self, action: #selector(tappedNavRightBarButton))
         navigationItem.rightBarButtonItem = rightBarButton
         navigationItem.rightBarButtonItem?.tintColor = .white
+        let logoutBarButton = UIBarButtonItem(title: "ログアウト", style: .plain, target: self, action: #selector(tappedLogoutButton))
+        navigationItem.leftBarButtonItem = logoutBarButton
+        navigationItem.leftBarButtonItem?.tintColor = .white
     }
     // 未ログインは、ログイン画面を表示
     private func confirmLoggedInUser() {
         if Auth.auth().currentUser?.uid == nil {
-            let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
-            let signUpViewController = storyboard.instantiateViewController(withIdentifier: "SignUpViewController") as! SignUpViewController
-            signUpViewController.modalPresentationStyle = .fullScreen
-            present(signUpViewController, animated: true, completion: nil)
+            pushLoginViewController()
         }
     }
-    
+    // 新規チャットボタン
     @objc private func tappedNavRightBarButton() {
         let storyboard = UIStoryboard(name: "UserList", bundle: nil)
         let userListViewController = storyboard.instantiateViewController(withIdentifier: "UserListViewController")
         let nav = UINavigationController(rootViewController: userListViewController)
         present(nav, animated: true, completion: nil)
     }
-    
+    // ログウトボタン
+    @objc private func tappedLogoutButton() {
+        do {
+            try Auth.auth().signOut()
+            pushLoginViewController()
+        } catch {
+            print("ログアウトに失敗しました",error)
+        }
+        
+    }
+    // サインアップ画面を表示
+    private func pushLoginViewController() {
+        let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
+        let loginViewController = storyboard.instantiateViewController(withIdentifier: "SignUpViewController")
+        let nav = UINavigationController(rootViewController: loginViewController)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true, completion: nil)
+    }
+    //
     private func fetchLoginUserInfo() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
